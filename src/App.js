@@ -78,7 +78,7 @@ function App()
 
 	return (
 		<div>
-			<div className="flex items-center justify-center h-screen">
+			<div className="flex items-center justify-center h-screen p-2">
 				<form onSubmit={ft_submit} className='flex flex-col bg-green-700 rounded-2xl p-4 w-100'>
 					<h2 className="p-4 text-center font-bold text-white text-xl">Take money</h2>
 					<hr className="mb-2"/>
