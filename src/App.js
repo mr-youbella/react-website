@@ -1,5 +1,6 @@
 import './App.css';
 import Swal from 'sweetalert2';
+import { ToastContainer, toast } from 'react-toastify';
 import { Functions } from './Functions';
 import { useState } from 'react';
 import All from './gategory/All';
@@ -14,11 +15,51 @@ function	App()
 	const		[input_task, setInputTask] = useState("");
 	let			deleteTask = (id) => (setTasks(tasks.filter((value) => (value.id !== id))));
 	let			completeTask = (id) => (setTasks(tasks.map((value) => (value.id === id ? {...value, isComplete: !value.isComplete} : value))));
-	function editTask(id)
+	async function editTask(id)
 	{
-	  
+		let	title, content;
+		
+		let promise = await Swal.fire
+		({
+			title: "Hello",
+			text: "Change title task:",
+			input: "text",
+			confirmButtonText: "Change", 
+			confirmButtonColor: "green",
+			showCancelButton: true,
+			cancelButtonText: "Cancel",
+			cancelButtonColor: "red"
+		});
+		if (promise.isConfirmed)
+		{
+			toast.success("Title is changed...");
+			title = promise.value;
+		}
+		else
+			toast.error("Title is not changed...");
+		promise = await Swal.fire
+		({
+			title: "Hello",
+			text: "Change content task:",
+			input: "text",
+			confirmButtonText: "Change", 
+			confirmButtonColor: "green",
+			showCancelButton: true,
+			cancelButtonText: "Cancel",
+			cancelButtonColor: "red"
+		});
+		if (promise.isConfirmed)
+		{
+			toast.success("Content is changed...");
+			content = promise.value;
+		}
+		else
+			toast.error("Content is not changed...");
+		if (title)
+			setTasks(tasks.map((value) => (value.id === id ? {...value, title: title} : value)));
+		if (content)
+			setTasks((tasks) => (tasks.map((value) => (value.id === id ? {...value, content: content} : value))));
 	}
-	
 
 	return (
 		<div className="h-screen mx-auto flex justify-center items-center">
@@ -46,6 +87,7 @@ function	App()
 					}} className={`${style_button} bg-blue-600 font-bold text-white hover:bg-blue-700 flex-1`}>Add</button>
 				</form>
 			</div>
+			<ToastContainer />
 		</div>
 	);
 }
