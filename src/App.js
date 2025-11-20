@@ -2,19 +2,29 @@ import './App.css';
 import Swal from 'sweetalert2';
 import { ToastContainer, toast } from 'react-toastify';
 import { Functions } from './Functions';
-import { useState } from 'react';
 import All from './gategory/All';
 import Complete from './gategory/Complete';
 import UnComplete from './gategory/UnComplete';
 
 function	App()
 {
+	let			arr = [];
 	let			style_button = "rounded-2xl font-bold p-2 border-2 border-black cursor-pointer transition-[background-color] duration-500 hover:text-white";
 	const		[category_type, setGategoryType] = useState("All");
-	const		[tasks, setTasks] = useState([]);
+	const		[tasks, setTasks] = useState(JSON.parse(localStorage.getItem("todoList")) || []);
 	const		[input_task, setInputTask] = useState("");
-	let			deleteTask = (id) => (setTasks(tasks.filter((value) => (value.id !== id))));
-	let			completeTask = (id) => (setTasks(tasks.map((value) => (value.id === id ? {...value, isComplete: !value.isComplete} : value))));
+	let			deleteTask = (id) => 
+	{
+		arr = tasks.filter((value) => (value.id !== id));
+		setTasks(arr);
+		localStorage.setItem("todoList", JSON.stringify(arr));
+	};
+	let			completeTask = (id) =>
+	{
+		arr = tasks.map((value) => (value.id === id ? {...value, isComplete: !value.isComplete} : value));
+		setTasks(arr)
+		localStorage.setItem("todoList", JSON.stringify(arr));
+	};
 	async function editTask(id)
 	{
 		let	title, content;
@@ -30,7 +40,7 @@ function	App()
 			cancelButtonText: "Cancel",
 			cancelButtonColor: "red"
 		});
-		if (promise.isConfirmed)
+		if (promise.isConfirmed && promise.value)
 		{
 			toast.success("Title is changed...");
 			title = promise.value;
@@ -48,7 +58,7 @@ function	App()
 			cancelButtonText: "Cancel",
 			cancelButtonColor: "red"
 		});
-		if (promise.isConfirmed)
+		if (promise.isConfirmed && promise.value)
 		{
 			toast.success("Content is changed...");
 			content = promise.value;
@@ -56,11 +66,22 @@ function	App()
 		else
 			toast.error("Content is not changed...");
 		if (title)
-			setTasks(tasks.map((value) => (value.id === id ? {...value, title: title} : value)));
+		{
+			arr = tasks.map((value) => (value.id === id ? {...value, title: title} : value));
+			setTasks(arr);
+			localStorage.setItem("todoList", JSON.stringify(arr));
+		}
 		if (content)
-			setTasks((tasks) => (tasks.map((value) => (value.id === id ? {...value, content: content} : value))));
+		{
+			arr = tasks.map((value) => (value.id === id ? {...value, content: content} : value));
+			setTasks(arr);
+			localStorage.setItem("todoList", JSON.stringify(arr));
+		}
 	}
-
+	
+								
+	window.addEventListener("storage", (event) => (localStorage.setItem(event.key, event.oldValue)));
+	
 	return (
 		<div className="h-screen mx-auto flex justify-center items-center">
 			<div className="bg-gray-100 rounded-4xl px-10 p-4">
@@ -81,8 +102,12 @@ function	App()
 					<input value={input_task} onChange={(event) => (setInputTask(event.target.value))} className="border-2 border-gray-400 p-2 rounded-3xl font-bold placeholder:text-gray-500" placeholder="Enter task" type="text"></input>
 					<button onClick={() =>
 					{
-						if (input_task)
-							setTasks([...tasks, {id: tasks.length + 1, title: input_task, content: "NULL", isComplete: false}]);
+						if (input_task && input_task.trim().length)
+							{
+								arr = [...tasks, {id: tasks.length + 1, title: input_task, content: "NULL", isComplete: false}];
+								setTasks(arr);
+								localStorage.setItem("todoList", JSON.stringify(arr));
+						}
 						setInputTask("");
 					}} className={`${style_button} bg-blue-600 font-bold text-white hover:bg-blue-700 flex-1`}>Add</button>
 				</form>
