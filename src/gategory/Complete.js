@@ -1,6 +1,6 @@
 import Task from './Tasks';
 
-export default function	All({tasks})
+export default function	Complete({tasks})
 {
 	return (
 		<>

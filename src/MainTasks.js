@@ -10,6 +10,8 @@ function	ShowTasks()
 {
 	let			arr = [];
 	let			style_button = "rounded-2xl font-bold p-2 border-2 border-black cursor-pointer transition-[background-color] duration-500 hover:text-white";
+	let			style_button_active = "rounded-2xl font-bold p-2 border-2 border-black cursor-pointer bg-blue-600 font-bold text-white hover:bg-blue-700 flex-1 transition-[background-color] duration-500 hover:text-white";
+	let			style_button_unactive = "rounded-2xl font-bold p-2 border-2 border-black cursor-not-allowed bg-gray-500 font-bold text-white flex-1";
 	const		[category_type, setGategoryType] = useState("All");
 	const		[tasks, setTasks] = useState(JSON.parse(localStorage.getItem("todoList")) || []);
 	const		[input_task, setInputTask] = useState("");
@@ -106,13 +108,13 @@ function	ShowTasks()
 				<button onClick={() =>
 				{
 					if (input_task && input_task.trim().length)
-						{
-							arr = [...tasks, {id: tasks.length + 1, title: input_task, content: "NULL", isComplete: false}];
-							setTasks(arr);
-							localStorage.setItem("todoList", JSON.stringify(arr));
+					{
+						arr = [...tasks, {id: tasks.length + 1, title: input_task, isComplete: false}];
+						setTasks(arr);
+						localStorage.setItem("todoList", JSON.stringify(arr));
+						setInputTask("");
 					}
-					setInputTask("");
-				}} className={`${style_button} bg-blue-600 font-bold text-white hover:bg-blue-700 flex-1`}>Add</button>
+				}} className={`${input_task && input_task.trim().length ? style_button_active : style_button_unactive} `}>Add</button>
 			</form>
 			<ToastContainer />
 		</div>

@@ -19,7 +19,7 @@ function	App()
 		<div className="h-screen flex justify-center items-center relative">
 			<div className="absolute top-0 justify-start bg-amber-50 w-full flex p-4">
 				<Link to="/"><h1 className="text-2xl font-bold">Todo List</h1></Link>
-				<h2 className="text-xl text-amber-700 font-bold flex flex-1 justify-end"><a href="https://www.instagram.com/master_youbella/" target="_blank">Master Youbella</a></h2>
+				<h2 className="text-xl text-amber-700 font-bold flex flex-1 justify-end"><a href="https://www.instagram.com/master_youbella/" target="_blank" rel="noreferrer">Master Youbella</a></h2>
 			</div>
 			<Routes>
 				<Route path="*" element={<ButtonStart />} />
